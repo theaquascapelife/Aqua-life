@@ -11,6 +11,7 @@ interface FeaturedProduct {
   image?: any;
 }
 
+
 export default async function FeaturedProducts() {
   const products = await fetchSanityData<FeaturedProduct[]>(
     featuredProductsQuery,

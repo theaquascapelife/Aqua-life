@@ -1,4 +1,5 @@
 "use client";
+
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -9,52 +10,54 @@ interface ProductCardProps {
   _id: string;
   title: string;
   price: number;
-  image?: any; // Sanity image object
+  image?: any;
   slug: string;
 }
+
 export default function ProductCard({
   _id,
   title,
   price,
   image,
   slug,
-}: ProductCardProps & { _id: string }) {
+}: ProductCardProps) {
   const addItem = useCart((state) => state.addItem);
-  let imageUrl: string | StaticImageData = "/placeholder.png";
 
-  // ✅ Sanity image object
+  let imageForUI: string | StaticImageData = "/placeholder.png";
+  let imageForCart: string = "/placeholder.png";
+
+  // ✅ Sanity image
   if (image && typeof image === "object" && image.asset?._ref) {
-    imageUrl = urlFor(image).width(500).height(500).url();
+    imageForCart = urlFor(image).width(500).height(500).url();
+    imageForUI = imageForCart;
   }
-  // ✅ Static local image (next/image import)
+  // ✅ Local static image
   else if (typeof image === "object") {
-    imageUrl = image as StaticImageData;
+    imageForUI = image as StaticImageData;
+    imageForCart = "/placeholder.png"; // or a public fallback
   }
-  // ✅ Remote string URL
+  // ✅ Remote URL
   else if (typeof image === "string") {
-    imageUrl = image;
+    imageForUI = image;
+    imageForCart = image;
   }
 
   return (
     <div className="group rounded-xl border bg-white p-4 transition hover:shadow-md">
-      {/* Image */}
       <Link href={`/product/${slug}`}>
         <div className="relative aspect-square overflow-hidden rounded-lg">
           <Image
-            src={imageUrl}
+            src={imageForUI}
             alt={title}
             fill
-            unoptimized
             sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
       </Link>
 
-      {/* Content */}
       <div className="mt-4 space-y-2">
         <h3 className="line-clamp-2 text-sm font-medium">{title}</h3>
-
         <p className="text-lg font-semibold">₹{price.toLocaleString()}</p>
 
         <Button
@@ -66,7 +69,7 @@ export default function ProductCard({
               slug,
               title,
               price,
-              image: imageUrl,
+              image: imageForCart, // ✅ always string
             })
           }
         >
