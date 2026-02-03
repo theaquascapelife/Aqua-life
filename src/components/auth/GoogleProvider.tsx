@@ -1,0 +1,85 @@
+'use client'
+
+import React, { useState } from "react";
+import { useGoogleLogin } from "@react-oauth/google";
+import type { CodeResponse } from "@react-oauth/google";
+import { Button } from "@/components/ui/button";
+import { ImGooglePlus3 } from "react-icons/im";
+import { Loader2 } from "lucide-react";
+
+const GoogleProvider: React.FC = () => {
+
+  const [err, setErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+//   const from =
+//     (location.state as { from?: { pathname: string } })?.from?.pathname ||
+//     "/dashboard";
+
+  const handleSuccess = async (authResult: CodeResponse) => {
+    setLoading(true);
+    try {
+      if (authResult.code) {
+        // const result = await dispatch(loginWithGoogle(authResult.code));
+
+        // if ("error" in result && result.error?.message === "Rejected") {
+        //   setErr(result.payload as string);
+        // } else {
+        //   navigate(from, { replace: true });
+        // }
+        console.log("login")
+      } else {
+        setErr("No authorization code received from Google.");
+      }
+    } catch (error) {
+      console.error("Google login failed", error);
+      setErr("Something went wrong during login.");
+    } finally {
+      setLoading(false); // Always reset loading
+    }
+  };
+
+  const handleError = (
+    errorResponse: Pick<
+      CodeResponse,
+      "error" | "error_description" | "error_uri"
+    >
+  ) => {
+    console.error("Google login error:", errorResponse);
+    setErr(errorResponse.error_description || "Google login failed.");
+  };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: handleSuccess,
+    onError: handleError,
+    flow: "auth-code",
+  });
+
+  return (
+    <div>
+      <Button
+        onClick={() => {
+          setLoading(true);
+          googleLogin();
+        }}
+        disabled={loading}
+        className="h-12 w-full rounded-full text-md cursor-pointer bg-white text-gray-900 border border-gray-800 hover:bg-gray-900 hover:text-white transition-colors duration-350"
+      >
+        {loading ? (
+          <>
+            <Loader2 className="animate-spin" /> Signing In...
+          </>
+        ) : (
+          <>
+            <ImGooglePlus3 size={35} className="size-7 " /> Sign in with Google
+          </>
+        )}
+      </Button>
+
+      {/* <button onClick={() => googleLogin()}>Google Login</button> */}
+      {err && <p style={{ color: "red" }}>{err}</p>}
+    </div>
+  );
+};
+
+export default GoogleProvider;
