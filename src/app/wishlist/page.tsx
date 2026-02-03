@@ -23,12 +23,9 @@ export default function WishlistPage() {
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
-
         {/* Page Header */}
         <div className="mb-10">
-          <h1 className="text-3xl font-bold md:text-4xl">
-            My Wishlist
-          </h1>
+          <h1 className="text-3xl font-bold md:text-4xl">My Wishlist</h1>
           <p className="mt-2 text-muted-foreground">
             Save your favorite products to buy later
           </p>
@@ -37,24 +34,19 @@ export default function WishlistPage() {
         {/* Empty State */}
         {isEmpty && (
           <div className="flex flex-col items-center justify-center rounded-xl border py-20 text-center">
-            <p className="text-lg font-medium">
-              Your wishlist is empty
-            </p>
+            <p className="text-lg font-medium">Your wishlist is empty</p>
             <p className="mt-2 text-sm text-muted-foreground">
               Browse products and add them to your wishlist.
             </p>
 
-            <Link
-              href="/shop"
-              className="mt-6 underline text-sm font-medium"
-            >
+            <Link href="/shop" className="mt-6 underline text-sm font-medium">
               Continue Shopping
             </Link>
           </div>
         )}
 
         {/* Wishlist Grid */}
-        {!isEmpty && (
+        {/* {!isEmpty && (
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {wishlistItems.map((product) => (
               <ProductCard
@@ -63,8 +55,7 @@ export default function WishlistPage() {
               />
             ))}
           </div>
-        )}
-
+        )} */}
       </div>
     </section>
   );
