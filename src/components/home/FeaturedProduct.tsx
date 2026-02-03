@@ -1,42 +1,26 @@
-// components/home/FeaturedProducts.tsx
+// Server Component (NO "use client")
 import ProductCard from "@/components/product/ProductCard";
-import Aqua_Plant from "@/assets/Aquatic_Plant.webp";
-import Canister_Filter from "@/assets/Canister_Filter.jpg";
-import LED from "@/assets/LED.jpg";
-import Soil from "@/assets/Soil.jpeg";
+import { fetchSanityData } from "@/lib/sanity.fetch";
+import { featuredProductsQuery } from "@/lib/queries";
 
-const featuredProducts = [
-  {
-    title: "Java Moss Aquatic Plant",
-    price: 499,
-    image: Aqua_Plant,
-    slug: "java-moss",
-  },
-  {
-    title: "Aquarium LED Light 60cm",
-    price: 3499,
-    image: LED,
-    slug: "aquarium-led-light",
-  },
-  {
-    title: "External Canister Filter",
-    price: 6899,
-    image: Canister_Filter,
-    slug: "external-canister-filter",
-  },
-  {
-    title: "Aquarium Soil Substrate",
-    price: 1999,
-    image: Soil,
-    slug: "aquarium-soil",
-  },
-];
+interface FeaturedProduct {
+  _id: string;
+  title: string;
+  price: number;
+  slug: string;
+  image?: any;
+}
 
-export default function FeaturedProducts() {
+export default async function FeaturedProducts() {
+  const products = await fetchSanityData<FeaturedProduct[]>(
+    featuredProductsQuery,
+  );
+
+  if (!products?.length) return null;
+
   return (
     <section className="py-16 bg-slate-50">
       <div className="container mx-auto px-4">
-
         {/* Header */}
         <div className="mb-10 flex items-center justify-between">
           <div>
@@ -58,14 +42,10 @@ export default function FeaturedProducts() {
 
         {/* Grid */}
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {featuredProducts.map((product) => (
-            <ProductCard
-              key={product.slug}
-              {...product}
-            />
+          {products.map((product) => (
+            <ProductCard key={product._id} {...product} />
           ))}
         </div>
-
       </div>
     </section>
   );

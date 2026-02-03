@@ -10,3 +10,13 @@ export const PRODUCTS_QUERY = groq`
     image
   }
 `;
+
+export const featuredProductsQuery = `
+  *[_type == "product" && isFeatured == true][0...4] {
+    _id,
+    title,
+    price,
+    slug,
+    image
+  }
+`;
