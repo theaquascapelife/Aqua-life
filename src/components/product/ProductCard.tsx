@@ -58,7 +58,7 @@ export default function ProductCard({
 
       <div className="mt-4 space-y-2">
         <h3 className="line-clamp-2 text-sm font-medium">{title}</h3>
-        <p className="text-lg font-semibold">₹{price.toLocaleString()}</p>
+        <p className="text-lg font-semibold">₹{price?.toLocaleString()}</p>
 
         <Button
           size="sm"

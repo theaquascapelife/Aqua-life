@@ -5,7 +5,9 @@ export async function fetchSanityData<T>(query: string) {
     query,
     {},
     {
-      cache: "no-store",
+      next: {
+        revalidate: 60,
+      },
     },
   );
 }
