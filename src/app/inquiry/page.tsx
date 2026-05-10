@@ -37,10 +37,14 @@ export default function InquiryPage() {
       }),
     });
 
-    if (res.ok) {
-      clearCart();
-      setSuccess(true);
+    if (!res.ok) {
+      alert("Something went wrong");
+      setLoading(false);
+      return;
     }
+
+    clearCart();
+    setSuccess(true);
 
     setLoading(false);
   }
@@ -74,15 +78,10 @@ export default function InquiryPage() {
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-5">
-
               {/* Name */}
               <div className="space-y-1">
                 <label className="text-sm font-medium">Full Name</label>
-                <Input
-                  name="name"
-                  required
-                  placeholder="John Doe"
-                />
+                <Input name="name" required placeholder="John Doe" />
               </div>
 
               {/* Email */}
@@ -99,11 +98,7 @@ export default function InquiryPage() {
               {/* Phone */}
               <div className="space-y-1">
                 <label className="text-sm font-medium">Phone Number</label>
-                <Input
-                  name="phone"
-                  required
-                  placeholder="+91 XXXXX XXXXX"
-                />
+                <Input name="phone" required placeholder="+91 XXXXX XXXXX" />
               </div>
 
               {/* Message */}
@@ -139,7 +134,6 @@ export default function InquiryPage() {
               <p className="text-center text-xs text-muted-foreground">
                 No payment required. Our experts will contact you shortly.
               </p>
-
             </form>
           </CardContent>
         </Card>
